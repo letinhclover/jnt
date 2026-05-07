@@ -238,7 +238,7 @@ body.dark .edit-area { background: #1a1a1a; border-color: #444; }
 .install-btn { background: linear-gradient(135deg, var(--accent), #27ae60); color: white; border: none; border-radius: 30px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
 
 .contact-btn { display: inline-block; border-radius: 30px; background: rgba(0,123,255,0.1); color: var(--blue-text); text-decoration: none; font-weight: 800; text-align: center; }
-.footer-info { text-align: center; border-top: 1px dashed #ccc; font-size: 0.9em; opacity: 0.8; font-weight: 500;}
+.footer-info { text-align: center; border-top: 1px dashed #ccc; font-size: 0.9em; opacity: 0.8; font-weight: 500; margin-top: 15px; padding-top: 15px;}
 body.dark .footer-info { border-color: #444; }
 
 /* TOAST */
@@ -318,7 +318,16 @@ body.dark .footer-info { border-color: #444; }
       </div>
     </div>
 
-    <!-- Group 2: Chia sẻ & Liên hệ -->
+    <!-- Group 2: Tải App Tài Xế -->
+    <div class="card-box">
+      <h2 class="section-title">📦 Link tải app tài xế</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <a class="link-card" href="https://jtexpress.vn/app/#appDriver" target="_blank" style="margin:0; justify-content:center; text-align:center;">📱 VnDriver (APK)</a>
+          <a class="link-card" href="https://testflight.apple.com/join/ngwb0Mpe" target="_blank" style="margin:0; justify-content:center; text-align:center;">🍏 VnDriver (iOS)</a>
+      </div>
+    </div>
+
+    <!-- Group 3: Chia sẻ & Liên hệ -->
     <div class="card-box" style="padding: 15px 10px 10px;">
         <h2 class="section-title" style="text-align: center; border:none; margin-bottom:10px;">CHIA SẺ & CỘNG ĐỒNG</h2>
         
@@ -332,7 +341,7 @@ body.dark .footer-info { border-color: #444; }
             </div>
         </div>
 
-        <div class="footer-info" style="margin-top: 15px; padding-top: 15px;">
+        <div class="footer-info">
             <div style="font-weight:700; color:var(--primary); margin-bottom:3px; font-size:0.9em;">DÀNH CHO NỘI BỘ TÀI XẾ J&T</div>
             <div id="visitCount" style="margin-bottom:3px; font-size:0.85em;">Đang tải lượt truy cập...</div>
             <div style="font-size:0.95em; font-weight: 500;">
@@ -403,7 +412,7 @@ function toggleThemeHandler() {
     if (btn) btn.textContent = isDark ? '☀️' : '🌙';
 }
 
-// --- 3. MAPS GENERATION (ĐÃ XÓA H82, H83, GW4, H86) ---
+// --- 3. MAPS GENERATION ---
 const googleMapsData =[
     { code: 'GW0', address: 'Kho 1, Lô TT1, QL22, KCN Tân Phú Trung, Củ Chi', link: 'https://maps.app.goo.gl/8ue4xcmMdxwMS5uX9', type: 'GW' },
     { code: 'GW3', address: '1103 QL1A, Bình Trị Đông A, Bình Tân', link: 'https://maps.app.goo.gl/qdCVdF9DygSqSWin7', type: 'GW' },
@@ -608,7 +617,7 @@ function initApp() {
     const savedTab = safeGetItem('activeTab');
     const savedTabTitle = safeGetItem('activeTabTitle');
     
-    // Đảm bảo không mở vào những Tab (Dầu, Lương) đã bị xóa
+    // Khởi động vào tab lưu trước đó, mặc định là Công việc
     if(savedTab && savedTabTitle && document.getElementById(savedTab)) {
         switchTab(savedTab, savedTabTitle);
     } else {
