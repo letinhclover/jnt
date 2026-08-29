@@ -395,14 +395,14 @@ body.dark .btn-cancel { background: #333; color: #ddd; }
     <div id="lock-screen-congviec" class="locked-screen">
         <div class="locked-icon">🔒</div>
         <div class="locked-title">Liên kết nội bộ J&T</div>
-        <div class="locked-desc">Các đường link báo cáo chỉ dành cho nhân viên. Bạn cần nhập mã PIN để truy cập:</div>
+        <div class="locked-desc">Các đường link báo cáo chỉ dành cho nội bộ tài xế. Bạn cần nhập mã PIN để truy cập:</div>
         
         <div class="pin-input-box">
             <input type="text" id="pinInputCongViec" class="pin-input" placeholder="Mã PIN..." autocomplete="off">
             <button class="btn-unlock-pin" onclick="verifyPIN('pinInputCongViec')">MỞ</button>
         </div>
 
-        <a href="https://zalo.me/g/lgwxjz988" target="_blank" class="btn-zalo-hint">👉 Lấy mã PIN tại nhóm Zalo nội bộ</a>
+        <a href="https://zalo.me/g/lgwxjz988" target="_blank" class="btn-zalo-hint">👉 Lấy mã PIN tại nhóm Zalo </a>
     </div>
 
     <div id="premium-content-congviec" style="display: none;">
@@ -749,7 +749,7 @@ body.dark .btn-cancel { background: #333; color: #ddd; }
 
 <script>
 // --- 0. SECRET PIN CONFIG ---
-const SECRET_PIN = "0jntdriver6"; // Mã PIN bí mật để mở khóa Tab Công việc
+const SECRET_PIN = "T9"; // Mã PIN bí mật để mở khóa Tab Công việc
 
 // --- 1. SAFE STORAGE WRAPPER ---
 function safeGetItem(key) {
