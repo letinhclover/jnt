@@ -208,8 +208,8 @@ a.link-card {
   transition: transform 0.1s, background 0.1s;
 }
 a.link-card:active { transform: scale(0.97); background: rgba(0,0,0,0.05); }
-body.dark a.link-card { background: rgba(255,255,255,0.03); border-color: #333; }
-body.dark a.link-card:active { background: rgba(255,255,255,0.08); }
+body.dark .link-card { background: rgba(255,255,255,0.03); border-color: #333; }
+body.dark .link-card:active { background: rgba(255,255,255,0.08); }
 
 a.link-card.highlight-link {
     color: var(--blue-text); border-color: rgba(0, 86, 179, 0.3); background: rgba(0, 86, 179, 0.05);
@@ -642,10 +642,10 @@ body.dark .btn-deny { background: #d35400; color: #fff; }
     </div>
   </section>
 
-  <!-- ================= TAB 4: LƯƠNG (CHÍNH SÁCH TEM & KM) ================= -->
+  <!-- ================= TAB 4: LƯƠNG (CHÍNH SÁCH MỚI: TEM & KM) ================= -->
   <section id="tab-luong" class="tab-pane">
 
-    <!-- Card 1: Cài đặt thông số lương & Km tháng (Gộp chung cực gọn) -->
+    <!-- Card 1: Cài đặt thông số lương (Siêu gọn) -->
     <div class="card-box">
         <h2 class="section-title">⚙ Cài đặt thông số lương</h2>
         <div class="salary-row">
@@ -661,9 +661,6 @@ body.dark .btn-deny { background: #d35400; color: #fff; }
                 <label for="salary_bhxh" class="calc-label">Trừ BHXH</label>
                 <input type="text" id="salary_bhxh" value="557.550" class="calc-input" inputmode="numeric" onfocus="this.select()" oninput="formatInputMoney(this); saveSalarySettings(); tinhLuong(false);">
             </div>
-        </div>
-        <div class="input-group-calc" style="margin-bottom:2px; margin-top:8px;">
-            <input type="text" id="monthKm" placeholder="Tổng Km tháng..." inputmode="decimal" class="calc-input" onfocus="this.select()" oninput="saveSalarySettings(); tinhLuong(false);">
         </div>
     </div>
 
@@ -694,10 +691,29 @@ body.dark .btn-deny { background: #d35400; color: #fff; }
         <button class="save-btn btn-delete-month" onclick="resetTemMonth()">🗑️ Xóa sổ tháng này</button>
     </div>
 
-    <!-- Card 3: Bảng tổng kết lương tạm tính -->
+    <!-- Card 3: Tính nhanh & Bảng tổng kết lương -->
     <div class="card-box">
-        <h2 class="section-title">💰 LƯƠNG TẠM TÍNH</h2>
-        <button onclick="tinhLuong(true)" class="calc-submit" style="margin-top:5px;">CẬP NHẬT KẾT QUẢ</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid rgba(204,0,0,0.1); margin:5px 0 12px 0; padding-bottom:5px;">
+            <h2 class="section-title" style="border:none; margin:0; padding:0;">⚡ Tính nhanh</h2>
+            <button onclick="syncTemData(false)" style="background:rgba(25,136,69,0.1); color:var(--status-green); border:1px dashed var(--status-green); border-radius:6px; padding:4px 8px; font-size:11px; font-weight:700; cursor:pointer;">🔄 ĐỒNG BỘ</button>
+        </div>
+
+        <div class="salary-row">
+            <div class="salary-col">
+                <label for="quick_km" class="calc-label">Tổng Km</label>
+                <input type="text" id="quick_km" placeholder="VD: 2600" inputmode="decimal" class="calc-input" onfocus="this.select()" oninput="saveSalarySettings(); tinhLuong(false);">
+            </div>
+            <div class="salary-col">
+                <label for="quick_tem55" class="calc-label">Tem 55k</label>
+                <input type="number" id="quick_tem55" placeholder="Số tem" inputmode="numeric" class="calc-input" onfocus="this.select()" oninput="saveSalarySettings(); tinhLuong(false);">
+            </div>
+            <div class="salary-col">
+                <label for="quick_tem66" class="calc-label">Tem 66k</label>
+                <input type="number" id="quick_tem66" placeholder="Số tem" inputmode="numeric" class="calc-input" onfocus="this.select()" oninput="saveSalarySettings(); tinhLuong(false);">
+            </div>
+        </div>
+
+        <button onclick="tinhLuong(true)" class="calc-submit" style="margin-top:5px;">TÍNH KẾT QUẢ</button>
         
         <div class="result-box-ot" id="ketQuaLuong" style="display:block; margin-top:15px;">
             <div class="result-item">
@@ -709,8 +725,12 @@ body.dark .btn-deny { background: #d35400; color: #fff; }
                 <span class="result-value text-blue" id="resKPI">+2.000.000 VNĐ</span>
             </div>
             <div class="result-item">
-                <span>🏷️ Tiền Tem xe (<span id="resTemCount">0</span> tem):</span>
-                <span class="result-value text-blue" id="resTienTem">+0 VNĐ</span>
+                <span>🏷️ Tem 55k (<span id="resTem55Count">0</span> tem):</span>
+                <span class="result-value text-blue" id="resTienTem55">+0 VNĐ</span>
+            </div>
+            <div class="result-item">
+                <span>🏷️ Tem 66k (<span id="resTem66Count">0</span> tem):</span>
+                <span class="result-value text-blue" id="resTienTem66">+0 VNĐ</span>
             </div>
             <div class="result-item">
                 <span>🚗 Tiền Km (<span id="resKmCount">0</span> km):</span>
@@ -722,7 +742,7 @@ body.dark .btn-deny { background: #d35400; color: #fff; }
             </div>
             
             <div id="kmMissingNotice" style="display:none; font-size:12px; color:var(--edit); margin-top:8px; font-weight:700; text-align:center;">
-                ⚠️ Chưa nhập số Km tháng (chưa cộng tiền Km)
+                ⚠️ Chưa nhập Tổng Km (chưa cộng tiền Km)
             </div>
 
             <div style="background:linear-gradient(135deg,#ff0033,#dd2476); padding:15px; border-radius:10px; margin-top:12px; color:#fff; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 12px rgba(204,0,0,0.25);">
@@ -1274,7 +1294,7 @@ function parseDecimal(id) {
 }
 
 // ================= 8. LOGIC: LƯƠNG CHÍNH SÁCH MỚI (TEM & KM) =================
-const salarySettingFields = ['salary_cb', 'salary_kpi', 'salary_bhxh', 'monthKm'];
+const salarySettingFields = ['salary_cb', 'salary_kpi', 'salary_bhxh', 'quick_km', 'quick_tem55', 'quick_tem66'];
 
 function loadSalarySettings() {
     salarySettingFields.forEach(id => {
@@ -1283,7 +1303,7 @@ function loadSalarySettings() {
             const el = document.getElementById(id);
             if(el) {
                 el.value = saved;
-                if(id !== 'monthKm') formatInputMoney(el);
+                if(id === 'salary_cb' || id === 'salary_kpi' || id === 'salary_bhxh') formatInputMoney(el);
             }
         }
     });
@@ -1363,7 +1383,8 @@ function addTemLog() {
     
     saveAndRenderTem();
     document.getElementById('temLogCount').value = '';
-    tinhLuong(false);
+    
+    syncTemData(true);
 }
 
 function editTemLog(originalIndex) {
@@ -1397,7 +1418,7 @@ function deleteTemLog(originalIndex) {
             temLogs.splice(originalIndex, 1); 
             saveAndRenderTem(); 
             showToast("✅ Đã xóa nhật ký tem!");
-            tinhLuong(false);
+            syncTemData(true);
         }
     });
 }
@@ -1420,7 +1441,7 @@ function resetTemMonth() {
             temLogs = []; 
             saveAndRenderTem(); 
             showToast("🗑️ Đã xóa sổ tem tháng!");
-            tinhLuong(false);
+            syncTemData(true);
         }
     });
 }
@@ -1466,41 +1487,62 @@ function renderTemLogs() {
     document.getElementById('sumTemMoneyDisplay').innerText = formatMoney(totalTemMoney);
 }
 
+// ĐỒNG BỘ DỮ LIỆU TỪ SỔ TEM HÀNG NGÀY SANG 3 Ô TÍNH NHANH
+function syncTemData(isSilent = false) {
+    let sum55 = 0;
+    let sum66 = 0;
+    temLogs.forEach(log => {
+        let c = log.count || 0;
+        if (c <= 5) {
+            sum55 += c;
+        } else {
+            sum55 += 5;
+            sum66 += (c - 5);
+        }
+    });
+
+    document.getElementById('quick_tem55').value = sum55 > 0 ? sum55 : '';
+    document.getElementById('quick_tem66').value = sum66 > 0 ? sum66 : '';
+    saveSalarySettings();
+    tinhLuong(false);
+    if (!isSilent) showToast("✅ Đã đồng bộ dữ liệu tem!");
+}
+
 function tinhLuong(shouldScroll = true) {
     const luongCB = parseMoney('salary_cb');
     const kpi = parseMoney('salary_kpi');
     const bhxh = parseMoney('salary_bhxh');
-    const km = parseDecimal('monthKm');
+    const km = parseDecimal('quick_km');
+    const tem55 = parseDecimal('quick_tem55');
+    const tem66 = parseDecimal('quick_tem66');
 
-    let totalTem = 0;
-    let totalTemMoney = 0;
-    temLogs.forEach(log => {
-        totalTem += log.count;
-        totalTemMoney += calcDailyTemMoney(log.count);
-    });
+    const tienTem55 = tem55 * 55000;
+    const tienTem66 = tem66 * 66000;
 
     const kmData = calcMonthKmMoney(km);
     const totalKmMoney = kmData.total;
 
-    // Nhắc nhở nếu chưa nhập số Km tháng
+    // Nhắc nhở nếu chưa nhập số Km
     const kmNoticeEl = document.getElementById('kmMissingNotice');
     if (kmNoticeEl) {
         if (km <= 0) {
             kmNoticeEl.style.display = 'block';
             if (shouldScroll) {
-                showToast("⚠️ Nhớ nhập thêm số Km tháng khi công ty báo nhé!");
+                showToast("⚠️ Nhớ nhập thêm Tổng Km khi công ty báo nhé!");
             }
         } else {
             kmNoticeEl.style.display = 'none';
         }
     }
 
-    const thucNhan = luongCB + kpi + totalTemMoney + totalKmMoney - bhxh;
+    const thucNhan = luongCB + kpi + tienTem55 + tienTem66 + totalKmMoney - bhxh;
 
     document.getElementById('resLuongCB').innerText = formatMoney(luongCB);
     document.getElementById('resKPI').innerText = `+${formatMoney(kpi)}`;
-    document.getElementById('resTemCount').innerText = totalTem;
-    document.getElementById('resTienTem').innerText = `+${formatMoney(totalTemMoney)}`;
+    document.getElementById('resTem55Count').innerText = tem55;
+    document.getElementById('resTienTem55').innerText = `+${formatMoney(tienTem55)}`;
+    document.getElementById('resTem66Count').innerText = tem66;
+    document.getElementById('resTienTem66').innerText = `+${formatMoney(tienTem66)}`;
     document.getElementById('resKmCount').innerText = km > 0 ? fmt(km) : 0;
     document.getElementById('resTienKm').innerText = `+${formatMoney(totalKmMoney)}`;
     document.getElementById('resBHXH').innerText = bhxh > 0 ? `-${formatMoney(bhxh)}` : '0 VNĐ';
@@ -1928,7 +1970,9 @@ function exportBackup() {
             salary_cb: safeGetItem('salary_cb'),
             salary_kpi: safeGetItem('salary_kpi'),
             salary_bhxh: safeGetItem('salary_bhxh'),
-            monthKm: safeGetItem('monthKm'),
+            quick_km: safeGetItem('quick_km'),
+            quick_tem55: safeGetItem('quick_tem55'),
+            quick_tem66: safeGetItem('quick_tem66'),
             dateRegistry: safeGetItem('dateRegistry'), 
             dateInsurance: safeGetItem('dateInsurance'),
             odoMaintenance: safeGetItem('odoMaintenance'),
